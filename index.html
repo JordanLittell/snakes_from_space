@@ -1,0 +1,46 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+  <title>Snake</title> 
+  <link type="text/css" href="style.css" rel="stylesheet"></link>
+</head>
+
+<body>
+  <h3>Snake</h3>
+  <nav>
+    <div class="button" id="pause">Pause</div>
+    <div class="button" id="play">Play</div>
+  </nav>
+
+  <canvas id="game-context" width="600px" height="400px"></canvas>
+
+
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js">
+  </script>
+  <script type="text/javascript" src="modules/underscore.js"></script>
+  <script type="text/javascript" src="modules/keys.js"></script>
+
+  <script type="text/javascript" src="modules/controls.js"></script>
+  <script type="text/javascript" src="events.js"></script>
+  <script type="text/javascript" src="laser.js"></script>
+  <script type="text/javascript" src="plasma.js"></script>
+  <script type="text/javascript" src="game.js"></script>
+  <script type="text/javascript" src="environment.js"></script>
+  <script type="text/javascript" src="snake.js"></script>
+  <script type="text/javascript">
+    var g = new Game(); 
+    g.init();
+
+    $('#play').click(function() {
+      if(window.g) {
+        window.g.stop(); 
+        window.g = null; 
+      }
+
+      var g = new Game();
+      g.init();
+    });  
+  </script>
+</body>
+
+</html>

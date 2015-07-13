@@ -1,0 +1,32 @@
+#plasma {
+  background-position: -15px -105px;
+  background-image: url("snake-sprite/1.jpg");
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
+  -webkit-animation:spin 4s linear infinite;
+  -moz-animation:spin 4s linear infinite;
+  animation:spin 4s linear infinite;
+}
+
+.button {
+  display: inline-block;
+  border-radius: 4px; 
+  padding: 10px;
+  width: 100px;
+  text-align: center;
+  font-weight: 100;
+  box-shadow: inset 3px 3px 3px #efefef;
+  margin-right: 5%;
+  color: rgba(100, 100, 200, 0.7);
+}
+
+.button:hover {
+  box-shadow: inset 3px 3px 3px #3079ed;
+  cursor: pointer;
+}
+
+
+  @-moz-keyframes spin { 100% { -moz-transform: rotateY(360deg); } }
+    @-webkit-keyframes spin { 100% { -webkit-transform: rotateY(360deg); } }
+    @keyframes spin { 100% { -webkit-transform: rotateY(360deg); transform:rotateY(360deg); } }
