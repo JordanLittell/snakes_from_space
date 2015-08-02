@@ -1,6 +1,30 @@
 function Laser (mount) {
   this.mount = mount;
-  this.duration = 30000;
+  //set expiration of the laser 
+  var start = new Date();
+  start.setSeconds(start.getSeconds() + 50);
+  this.expire = start;
+  this.moment = new Date();
+  this.duration = this.expire - this.moment;
+  this.displayTime();
+}
+
+Laser.prototype.updateTime = function () {
+  this.moment = new Date();
+  this.displayTime();
+  this.duration = this.expire - this.moment;
+}
+
+Laser.prototype.displayTime = function () {
+  Game.canvasContext.font = "14px sans serif";
+  var timeString = String(this.duration).split(''); 
+  timeString = timeString
+  .slice(0,2)
+  .concat([':'])
+  .concat(timeString.slice(3, 5))
+  .join('');
+  var output = "Laser limit: " + timeString;
+  Game.canvasContext.fillText(output, Game.width - 100, 40);
 }
 
 Laser.prototype.shoot = function () {
@@ -98,10 +122,6 @@ Laser.prototype.fireUp = function () {
       width: 2, 
       height: 10}]; 
   Game.env.bullets.push(bullets);
-}
-
-Laser.prototype.destroy = function () {
-  
 }
 
 Laser.prototype.fireDown = function () {

@@ -1,12 +1,15 @@
-
 var Game = function () {
   var el = document.getElementById('game-context');
   this.objectCount = 0;  
+  this.width = 600;
+  this.height = 400;
   this.dimensions = [0,0,600,400];
   this.context = el.getContext('2d');
   this.context.fillStyle = "black";
   this.context.fillRect.apply(this.context, this.dimensions);
 }
+Game.width = 600; 
+Game.height = 400;
 
 Game.prototype.clear = function () {
   this.context.clearRect.apply(this.context, this.dimensions);  
@@ -59,19 +62,23 @@ Game.prototype.animate = function () {
   var state = this;
   this.draw();
   this.step();
+  if(!this.env.plasma) this.env.genPlasma();
 
   if (this.env.objectCount < 10) {
     var apple = this.events.drawApple();
     this.env.register(apple);
-    if(!this.env.plasma) this.env.genPlasma();
   }
+
   if(this.env.outOfBounds()) {
     this.fail();
   }
+
   var obj = this.env.snakeFed();
+  
   if(obj){
     state.draw();
   }
+
   this.env.plasmaCollide();
   this.env.snake.move();  
 }

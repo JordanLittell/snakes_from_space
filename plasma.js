@@ -23,6 +23,13 @@ Plasma.prototype.setPosition = function (x, y) {
   });
 }
 
+Plasma.prototype.destroy = function () {
+  var w = this.width; 
+  var h = this.height; 
+  this.context.clearRect(0,0, w,h); 
+  this.el.remove();
+}
+
 Plasma.prototype.draw = function () {
   var t = this.t, 
   w = this.width, 

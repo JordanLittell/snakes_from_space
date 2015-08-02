@@ -18,11 +18,13 @@ Snake.prototype.acquireLaser = function () {
 }
 
 Snake.prototype.checkLaser = function () {
-  if (this.laser.duration <= 0) {
-    this.laser.destroy();
+  if(!this.laser) {return }
+  if (this.laser.moment <= this.laser.expiration) {
     this.laser = null;
   } else {
-    this.laser.duration -= 1;
+    this.laser.updateTime();
+    var state = this;
+    console.log(state.laser.duration);
   }
 }
 
@@ -90,6 +92,7 @@ Snake.prototype.move = function () {
       positions[i].dir = positions[i].nextDir;
     }
   }
+  this.checkLaser();
 }
 
 Snake.prototype.drawNode = function (x, y, width, height) {
@@ -140,9 +143,6 @@ Snake.prototype.right = function () {
   this.positions[lastIdx].dir = 'right';
 }
 
-Snake.prototype.die = function () {
-
-}
 
 Snake.prototype.getHead = function () {
   return this.positions[this.last()];

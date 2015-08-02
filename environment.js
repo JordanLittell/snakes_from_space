@@ -75,6 +75,7 @@ Environment.prototype.genPlasma = function () {
 }
 
 Environment.prototype.plasmaCollide = function () {
+  if (!this.plasma) { return; }
   var pos = this.plasma.getPos();
   var off = $(this.el).offset();
   var y = pos.top - off.top;
@@ -83,7 +84,11 @@ Environment.prototype.plasmaCollide = function () {
   var head = this.snake.positions[this.snake.last()];
   var deltaX = Math.abs(head.x - x);
   var deltaY = Math.abs(head.y - y);
-  if(deltaX <= 100 && deltaY <= 80) this.snake.acquireLaser();
+  if(deltaX <= 100 && deltaY <= 80) {
+    this.snake.acquireLaser();
+    this.plasma.destroy();
+    this.plasma = null;
+  }
 }
 
 Environment.prototype.snakeFed = function () {
