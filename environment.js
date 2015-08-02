@@ -13,6 +13,8 @@ var Environment = function (snake)  {
   this.snake.init();
   this.level = 1; 
   this.events = new Events();
+  this.nextPlasma = new Date(); 
+  this.nextPlasma.setSeconds(this.nextPlasma.getSeconds() + 10);
 };
 
 
@@ -68,6 +70,7 @@ Environment.prototype.outOfBounds = function () {
 
 Environment.prototype.genPlasma = function () {
   var ctx = this.ctx;
+
   if(!this.plasma) {
     var p = new Plasma(ctx);  
     this.plasma = p;
@@ -89,6 +92,8 @@ Environment.prototype.plasmaCollide = function () {
     this.plasma.destroy();
     this.plasma = null;
   }
+  this.nextPlasma = new Date(); 
+  this.nextPlasma.setSeconds(this.nextPlasma.getSeconds() + Math.random() * 200 + 60);
 }
 
 Environment.prototype.snakeFed = function () {

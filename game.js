@@ -7,6 +7,7 @@ var Game = function () {
   this.context = el.getContext('2d');
   this.context.fillStyle = "black";
   this.context.fillRect.apply(this.context, this.dimensions);
+  this.time = new Date();
 }
 Game.width = 600; 
 Game.height = 400;
@@ -62,7 +63,9 @@ Game.prototype.animate = function () {
   var state = this;
   this.draw();
   this.step();
-  if(!this.env.plasma) this.env.genPlasma();
+  Game.time = new Date();
+
+  if(Game.time >= this.env.nextPlasma) this.env.genPlasma();
 
   if (this.env.objectCount < 10) {
     var apple = this.events.drawApple();
@@ -109,12 +112,11 @@ Game.prototype.gameOver = function () {
   this.context.fillStyle = "black";
   this.context.fillRect.apply(this.context, this.dimensions);
   this.context.fillStyle = "Red";
-  this.context.font = "50px serif";
+  this.context.font = "50px sans-serif";
   this.context.fillText("Game Over!", 100, 100, 400); 
 };
 
 Game.prototype.fail = function () {
   window.clearInterval(this.gLoopId);
-  g = null; 
   this.gameOver();
 }

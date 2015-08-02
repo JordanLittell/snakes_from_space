@@ -143,7 +143,6 @@ Snake.prototype.right = function () {
   this.positions[lastIdx].dir = 'right';
 }
 
-
 Snake.prototype.getHead = function () {
   return this.positions[this.last()];
 }
