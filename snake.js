@@ -24,7 +24,6 @@ Snake.prototype.checkLaser = function () {
   } else {
     this.laser.updateTime();
     var state = this;
-    console.log(state.laser.duration);
   }
 }
 

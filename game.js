@@ -1,6 +1,7 @@
-var Game = function () {
-  var el = document.getElementById('game-context');
-  this.objectCount = 0;  
+var Game = function (el) {
+  var el = el;
+  this.objectCount = 0;
+  this.env = null; 
   this.width = 600;
   this.height = 400;
   this.dimensions = [0,0,600,400];
@@ -8,12 +9,23 @@ var Game = function () {
   this.context.fillStyle = "black";
   this.context.fillRect.apply(this.context, this.dimensions);
   this.time = new Date();
+  this.init();
 }
+
 Game.width = 600; 
 Game.height = 400;
 
 Game.prototype.clear = function () {
   this.context.clearRect.apply(this.context, this.dimensions);  
+}
+
+Game.prototype.kill = function () {
+  this.env.snake = null; 
+  if(this.env.snake.laser) {
+    this.env.snake.laser = null;
+  }
+  this.env = null;
+  delete this;
 }
 
 Game.prototype.draw = function () {
@@ -24,34 +36,34 @@ Game.prototype.draw = function () {
   this.env.renderObjects();
 }
 
-Game.prototype.addBindings = function () {
-  var g = this;
+Game.prototype.addBindings = function (env) {
+  //old bindings are still alive 
   var up = function () {
-    g.env.snake.up();
+    env.snake.up();
   };
 
   var down = function () {
-    g.env.snake.down();
+    env.snake.down();
   };
 
   var left = function () {
-    g.env.snake.left();
+    env.snake.left();
   };
 
   var right = function () {
-    g.env.snake.right();
+    env.snake.right();
   };
 
-  var shoot = function () {
-    if(!g.env.snake.laser) return;
-    g.env.snake.laser.shoot();
-  }
+  var space = function () {
+    if(!Game.env.snake.laser) return;
+    Game.env.snake.laser.shoot();
+  };
 
   controls.add('up', up);
   controls.add('down', down);
   controls.add('left', left);
   controls.add('right', right);
-  controls.add('space', shoot);
+  controls.add('space', space);
 }
 
 Game.prototype.step = function () {
@@ -64,10 +76,13 @@ Game.prototype.animate = function () {
   this.draw();
   this.step();
   Game.time = new Date();
-
+  if(this.env.outOfBounds()) {
+    this.gameOver();
+    return;
+  }
   if(Game.time >= this.env.nextPlasma) this.env.genPlasma();
 
-  if (this.env.objectCount < 10) {
+  if (this.env.objectCount < 1) {
     var apple = this.events.drawApple();
     this.env.register(apple);
   }
@@ -88,8 +103,6 @@ Game.prototype.animate = function () {
 
 Game.prototype.init = function () {
   var state = this;
-  if(this.gLoopId)
-    window.clearInterval(this.gLoopId);
   var snake = new Snake();
   this.env = new Environment(snake);  
   //add variables to game namespace
@@ -97,7 +110,8 @@ Game.prototype.init = function () {
   Game.canvasContext = document.getElementById('game-context').getContext('2d');
   Game.count = 0;
   this.events = new Events(this.env);
-  this.addBindings();
+  controls.reset();
+  this.addBindings(state.env);
   this.count = 0;
   this.gLoopId = setInterval(state.animate.bind(this), 60);
 }
@@ -108,10 +122,14 @@ Game.prototype.stop = function () {
 }
 
 Game.prototype.gameOver = function () {
+  var state = this;
+  window.clearInterval(state.gLoopId);
+  this.env = null 
+  this.snake = null;
   this.clear();
   this.context.fillStyle = "black";
   this.context.fillRect.apply(this.context, this.dimensions);
-  this.context.fillStyle = "Red";
+  this.context.fillStyle = "Red";  
   this.context.font = "50px sans-serif";
   this.context.fillText("Game Over!", 100, 100, 400); 
 };

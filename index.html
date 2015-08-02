@@ -27,15 +27,16 @@
   <script type="text/javascript" src="environment.js"></script>
   <script type="text/javascript" src="snake.js"></script>
   <script type="text/javascript">
-    var g = new Game(); 
-    g.init();
+    
     $('#play').click(function() {
-      if(window.g) {
-        window.g.stop(); 
-        delete g;
-      }
-      var g = new Game();
-      g.init();
+      document.getElementById('game-context').remove();
+      var el = document.createElement('canvas'); 
+      el.id = "game-context";
+      el.width = 600; 
+      el.height = 400;
+      document.body.appendChild(el);
+      if(window.game) { delete window.game; }
+      window.game = new Game(el);
     });  
   </script>
 </body>

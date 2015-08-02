@@ -2,7 +2,7 @@ function Laser (mount) {
   this.mount = mount;
   //set expiration of the laser 
   var start = new Date();
-  start.setSeconds(start.getSeconds() + 50);
+  start.setSeconds(start.getSeconds() + 30);
   this.expire = start;
   this.moment = new Date();
   this.duration = this.expire - this.moment;
@@ -11,7 +11,7 @@ function Laser (mount) {
 
 Laser.prototype.updateTime = function () {
   this.moment = new Date();
-  this.displayTime();
+  this.displayTime();  
   this.duration = this.expire - this.moment;
 }
 
@@ -24,7 +24,7 @@ Laser.prototype.displayTime = function () {
   .concat(timeString.slice(3, 5))
   .join('');
   var output = "Laser limit: " + timeString;
-  Game.canvasContext.fillText(output, Game.width - 100, 40);
+  Game.canvasContext.fillText(output, Game.width - 150, 40);
 }
 
 Laser.prototype.shoot = function () {
