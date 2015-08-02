@@ -1,4 +1,3 @@
-"use strict"; 
 
 var Game = function () {
   var el = document.getElementById('game-context');
@@ -19,7 +18,6 @@ Game.prototype.draw = function () {
   this.context.fillStyle = "black";
   this.context.fillRect.apply(this.context, this.dimensions);
   this.env.renderObjects();
-
 }
 
 Game.prototype.addBindings = function () {
@@ -52,11 +50,17 @@ Game.prototype.addBindings = function () {
   controls.add('space', shoot);
 }
 
+Game.prototype.step = function () {
+    this.count += 0.1;
+    Game.count += 0.1;
+}
+
 Game.prototype.animate = function () {
   var state = this;
   this.draw();
-  this.count += 0.1;
-  if (this.env.objectCount < 5) {
+  this.step();
+
+  if (this.env.objectCount < 10) {
     var apple = this.events.drawApple();
     this.env.register(apple);
     if(!this.env.plasma) this.env.genPlasma();
@@ -81,11 +85,13 @@ Game.prototype.init = function () {
   //add variables to game namespace
   Game.env = this.env;
   Game.canvasContext = document.getElementById('game-context').getContext('2d');
+  Game.count = 0;
   this.events = new Events(this.env);
   this.addBindings();
   this.count = 0;
-  this.gLoopId = setInterval(state.animate.bind(this), 100);
+  this.gLoopId = setInterval(state.animate.bind(this), 60);
 }
+
 Game.prototype.stop = function () {
   window.clearInterval(this.gLoopId);
   this.init();
@@ -98,7 +104,7 @@ Game.prototype.gameOver = function () {
   this.context.fillStyle = "Red";
   this.context.font = "50px serif";
   this.context.fillText("Game Over!", 100, 100, 400); 
-}
+};
 
 Game.prototype.fail = function () {
   window.clearInterval(this.gLoopId);

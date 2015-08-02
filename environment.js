@@ -13,24 +13,34 @@ var Environment = function (snake)  {
   this.snake.init();
   this.level = 1; 
   this.events = new Events();
-}
+};
+
 
 Environment.prototype.renderObjects =  function () {
   var state = this;
   if(this.bullets.length > 0) {
     this.renderBullets();  
   }
+  if(this.plasma) {
+    this.plasma.draw();
+  }
   
   if(this.objects) {
     _.each(this.objects, function(hash, key) {
       _.each(hash, function(obj, key) {
         if(obj && obj.type === 'apple') { 
-          state.events.drawCircle(obj.x, obj.y, obj.r);
+          if(obj.ticks <= 0) { 
+            state.objects[obj.x][obj.y] = null;
+            state.objectCount -= 1;       
+          } else {
+            state.events.drawCircle(obj.x, obj.y, obj.r);  
+            obj.ticks -= 1;
+          }
         } 
       });
     });
   }
-}
+};
 
 Environment.prototype.renderBullets  = function () {
   var ctx = Game.canvasContext;
@@ -42,7 +52,7 @@ Environment.prototype.renderBullets  = function () {
       ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     });
   });
-}
+};
 Environment.prototype.register = function (obj) {
   this.objects[obj.x] = this.objects[obj.x] ? this.objects[obj.x] : {};
   this.objects[obj.x][obj.y] = obj;
@@ -73,7 +83,7 @@ Environment.prototype.plasmaCollide = function () {
   var head = this.snake.positions[this.snake.last()];
   var deltaX = Math.abs(head.x - x);
   var deltaY = Math.abs(head.y - y);
-  if(deltaX <= 10 && deltaY <= 10) this.snake.acquireLaser();
+  if(deltaX <= 100 && deltaY <= 80) this.snake.acquireLaser();
 }
 
 Environment.prototype.snakeFed = function () {

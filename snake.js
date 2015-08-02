@@ -4,6 +4,7 @@ var Snake = function () {
   this.context = el.getContext('2d'); 
   this.length = 4; 
   this.lives = 4; 
+  this.appleCount = 0;
   this.squareDim = 10;
   this.positions = []; 
   this.startx = el.height/2; 
@@ -14,6 +15,15 @@ Snake.prototype.acquireLaser = function () {
   this.plasmaMode = true; 
   var head = this.positions[this.last()];
   this.laser = new Laser(head);
+}
+
+Snake.prototype.checkLaser = function () {
+  if (this.laser.duration <= 0) {
+    this.laser.destroy();
+    this.laser = null;
+  } else {
+    this.laser.duration -= 1;
+  }
 }
 
 Snake.prototype.eatApple = function (obj) {
@@ -28,6 +38,7 @@ Snake.prototype.eatApple = function (obj) {
   var xInt1 = (obj.x - obj.r <= veryRight) &&  (veryRight <= obj.x + obj.r);
   var xInt2 = (obj.x - obj.r <= veryLeft) &&  (veryLeft <= obj.x + obj.r);
   if((xInt1 || xInt2)&& (yInt1||yInt2)) {
+    this.appleCount += 1;
     this.grow();  
     return true;
   }

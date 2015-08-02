@@ -1,6 +1,8 @@
 function Laser (mount) {
   this.mount = mount;
+  this.duration = 30000;
 }
+
 Laser.prototype.shoot = function () {
   var dir = this.mount.dir;
   switch(dir) {
@@ -17,7 +19,7 @@ Laser.prototype.shoot = function () {
     this.fireRight(); 
     break;
   }
-}
+};
 
 Laser.prototype.fireLeft = function () {
   var top = this.mount.y; 
@@ -43,7 +45,7 @@ Laser.prototype.fireLeft = function () {
       width: 10, 
       height: 2}]; 
   Game.env.bullets.push(bullets);
-}
+};
 
 Laser.prototype.fireRight = function () {
   var top = this.mount.y; 
@@ -96,6 +98,10 @@ Laser.prototype.fireUp = function () {
       width: 2, 
       height: 10}]; 
   Game.env.bullets.push(bullets);
+}
+
+Laser.prototype.destroy = function () {
+  
 }
 
 Laser.prototype.fireDown = function () {

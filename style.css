@@ -1,14 +1,9 @@
-#plasma {
-  background-position: -15px -105px;
-  background-image: url("snake-sprite/1.jpg");
-  background-repeat: no-repeat;
-  width: 40px;
-  height: 40px;
-  -webkit-animation:spin 4s linear infinite;
-  -moz-animation:spin 4s linear infinite;
-  animation:spin 4s linear infinite;
-}
 
+#plasma {
+  position: absolute; 
+  top : 100px;
+  left: 100px;
+}
 .button {
   display: inline-block;
   border-radius: 4px; 

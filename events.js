@@ -18,9 +18,16 @@ Events.prototype.drawCircle = function (x, y , r) {
   this.context.stroke();
 }
 
+Events.prototype.drawEnergy =function () {
+  var vec = this.randVec();
+  var radius = 10;
+  var plasma = new Plasma('red', vec.x, vec.y);
+  return plasma;
+}
+
 Events.prototype.drawApple =function () {
   var vec = this.randVec();
   var radius = 10;
-  this.drawCircle(vec.x, vec.y, radius)
-  return {r: radius, x: vec.x, y: vec.y, type: 'apple'};
+  this.drawCircle(vec.x, vec.y, radius);
+  return {r: radius, x: vec.x, y: vec.y, ticks: Math.round(Math.random() * 100) + 50, type: 'apple'};
 }
